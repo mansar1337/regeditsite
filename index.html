@@ -1,0 +1,4503 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Реестр</title>
+    <style>
+        /* Современные переменные */
+        :root {
+            --primary-color: #3f51b5;
+            --primary-light: #757de8;
+            --primary-dark: #002984;
+            --secondary-color: #ff4081;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+            --gray-400: #ced4da;
+            --gray-500: #adb5bd;
+            --text-primary: #212121;
+            --text-secondary: #757575;
+            --border-radius: 12px;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Основные стили */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Современные заголовки */
+        h1, h2 {
+            color: var(--primary-color);
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Улучшенные формы */
+        .form-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control, 
+        input[type="text"],
+        input[type="date"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--text-primary);
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 2px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .form-control:focus,
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(63, 81, 181, 0.1);
+            outline: none;
+        }
+
+        /* Эффект наведения */
+        .form-control:hover,
+        input[type="text"]:hover,
+        input[type="date"]:hover,
+        textarea:hover,
+        select:hover {
+            border-color: var(--primary-color);
+        }
+
+        /* Стили для текстовой области */
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Улучшенный select */
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+
+        /* Улучшенный поиск */
+        .search-box {
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            padding-left: 3rem;
+            font-size: 1rem;
+            border: 2px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(63, 81, 181, 0.1);
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: var(--gray-400);
+            pointer-events: none;
+        }
+
+        /* Пл����������вающие метки для полей ввода */
+        .form-floating {
+            position: relative;
+        }
+
+        .form-floating label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 1rem;
+            pointer-events: none;
+            transform-origin: 0 0;
+            transition: all 0.2s ease-out;
+            color: var(--gray-500);
+            font-size: 1rem;
+        }
+
+        .form-floating input:focus ~ label,
+        .form-floating input:not(:placeholder-shown) ~ label,
+        .form-floating textarea:focus ~ label,
+        .form-floating textarea:not(:placeholder-shown) ~ label {
+            transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+            background-color: white;
+            padding: 0 0.5rem;
+            color: var(--primary-color);
+        }
+
+        /* Состояние ошибки */
+        .form-control.is-invalid,
+        input.is-invalid,
+        textarea.is-invalid,
+        select.is-invalid {
+            border-color: var(--danger-color);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23dc3545' viewBox='0 0 16 16'%3E%3Cpath d='M8 0a8 8 0 1 0 8 8 8 8 0 0 0-8-8zm0 14a6 6 0 1 1 6-6 6 6 0 0 1-6 6zm0-7l3-3 1 1-3 3 3 3-1 1-3-3-3 3-1-1 3-3-3-3 1-1 3 3z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+
+        .form-control.is-invalid:focus {
+            box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.1);
+        }
+
+        /* Состояние успеха */
+        .form-control.is-valid,
+        input.is-valid,
+        textarea.is-valid,
+        select.is-valid {
+            border-color: var(--success-color);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2328a745' viewBox='0 0 16 16'%3E%3Cpath d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+
+        /* Отключенное состояние */
+        .form-control:disabled,
+        input:disabled,
+        textarea:disabled,
+        select:disabled {
+            background-color: var(--gray-100);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            .form-control,
+            input[type="text"],
+            input[type="date"],
+            textarea,
+            select {
+                font-size: 16px; /* Предотвращает масштабирование на iOS */
+            }
+        }
+
+        /* Дополнительные переменные цветов */
+        :root {
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --primary-light: #7986cb;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+        }
+
+        /* Современные кнопки */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, var(--success-color), #66bb6a);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, var(--danger-color), #ef5350);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Современная таблица */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 2rem 0;
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        th {
+            background: var(--gray-100);
+            padding: 1.25rem 1rem;
+            font-weight: 600;
+            text-align: left;
+            color: var(--text-secondary);
+            border-bottom: 2px solid var(--gray-200);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--text-primary);
+        }
+
+        tr:hover {
+            background-color: var(--gray-100);
+        }
+
+        /* Современные статусы */
+        .status {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-active {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-active::before {
+            background-color: #2e7d32;
+        }
+
+        .status-pending {
+            background-color: #fff3e0;
+            color: #f57c00;
+        }
+
+        .status-pending::before {
+            background-color: #f57c00;
+        }
+
+        .status-closed {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .status-closed::before {
+            background-color: #c62828;
+        }
+
+        /* Современное модальное окно */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: none;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            margin: 40px auto;
+            max-height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .close-btn:hover {
+            color: var(--danger-color);
+        }
+
+        .btn-secondary {
+            background-color: var(--gray-400);
+            color: white;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Современный поиск */
+        .search-box {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23adb5bd' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 20px;
+        }
+
+        .search-box:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(63, 81, 181, 0.1);
+        }
+
+        /* Соврем��нная пагинация */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 2rem 0;
+        }
+
+        .pagination button {
+            padding: 0.75rem 1rem;
+            border: none;
+            background: white;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+            color: var(--text-secondary);
+        }
+
+        .pagination button.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .pagination button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Адаптивный дизайн */
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .modal-content {
+                margin: 1rem;
+            }
+        }
+
+        /* Стили дл�� ск��олла */
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 4px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: var(--gray-400);
+            border-radius: 4px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-500);
+        }
+
+        /* Компактые отступы для формы в модальном окне */
+        .modal .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .modal .form-group label {
+            margin-bottom: 0.3rem;
+        }
+
+        .modal input,
+        .modal select,
+        .modal textarea {
+            padding: 0.5rem;
+        }
+
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            .modal {
+                padding: 10px;
+            }
+
+            .modal-content {
+                padding: 1rem;
+                margin: 20px auto;
+                max-height: calc(100vh - 40px);
+            }
+
+            .modal-footer {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .modal-footer .btn {
+                width: 100%;
+            }
+        }
+
+        /* Обновленные стили для текстовых областей */
+        textarea {
+            resize: none; /* Запрещаем изменение размера */
+            min-height: 100px; /* Фиксированная высота */
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 1rem;
+            line-height: 1.5;
+            transition: var(--transition);
+        }
+
+        textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(63, 81, 181, 0.1);
+            outline: none;
+        }
+
+        /* Стили для комментария в форме редактирования */
+        #editComment,
+        #comment {
+            resize: none;
+            height: 100px; /* Фиксированная высота */
+        }
+
+        /* Основные стили для больших экранов */
+        @media screen and (min-width: 1400px) and (min-height: 1800px) {
+            .container {
+                max-width: 1400px;
+                margin: 3rem auto;
+                padding: 2.5rem;
+            }
+
+            /* Увеличенные размеры шрифтов */
+            body {
+                font-size: 18px;
+            }
+
+            h1 {
+                font-size: 3rem;
+                margin-bottom: 2rem;
+            }
+
+            h2 {
+                font-size: 2.2rem;
+                margin-bottom: 1.8rem;
+            }
+
+            /* Увеличенные поля ввода */
+            .form-group {
+                margin-bottom: 2rem;
+            }
+
+            .form-control,
+            input,
+            select,
+            textarea {
+                padding: 1rem 1.25rem;
+                font-size: 1.1rem;
+            }
+
+            /* Увеличенные кнопки */
+            .btn {
+                padding: 1rem 2rem;
+                font-size: 1.1rem;
+            }
+
+            /* Увеличенная таблица */
+            table {
+                margin: 2.5rem 0;
+            }
+
+            th, td {
+                padding: 1.5rem;
+                font-size: 1.1rem;
+            }
+
+            /* Статусы */
+            .status {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            /* Поиск */
+            .search-box {
+                padding: 1.25rem 1.5rem;
+                font-size: 1.1rem;
+                margin-bottom: 2.5rem;
+            }
+
+            /* Пагинация */
+            .pagination {
+                margin: 2.5rem 0;
+            }
+
+            .pagination button {
+                padding: 1rem 1.5rem;
+                font-size: 1.1rem;
+            }
+
+            /* Модальное окно */
+            .modal-content {
+                max-width: 800px;
+                padding: 3rem;
+            }
+
+            .modal {
+                padding: 40px;
+            }
+
+            /* Фиксированная высота комментария */
+            textarea {
+                min-height: 150px;
+            }
+
+            #editComment,
+            #comment {
+                height: 150px;
+            }
+
+            /* Фото */
+            .comment-photo {
+                max-width: 150px;
+                max-height: 150px;
+            }
+        }
+
+        /* Оптимизация для портретной ориентации */
+        @media screen and (min-width: 1400px) and (min-height: 1800px) and (orientation: portrait) {
+            .container {
+                max-width: 90%;
+            }
+
+            /* Компактное расположение элементов формы */
+            .form-group {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 2rem;
+            }
+
+            /* Улучшенное отображение таблицы */
+            table {
+                display: block;
+                max-height: 60vh;
+                overflow-y: auto;
+            }
+
+            thead {
+                position: sticky;
+                top: 0;
+                z-index: 1;
+                background: white;
+            }
+
+            /* Стили для скролла таблицы */
+            table::-webkit-scrollbar {
+                width: 10px;
+            }
+
+            table::-webkit-scrollbar-track {
+                background: var(--gray-100);
+                border-radius: 5px;
+            }
+
+            table::-webkit-scrollbar-thumb {
+                background: var(--gray-400);
+                border-radius: 5px;
+            }
+
+            table::-webkit-scrollbar-thumb:hover {
+                background: var(--gray-500);
+            }
+
+            /* Оптимизация модального окна */
+            .modal-content {
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+
+            /* Улучшенное отображение кнопок */
+            .btn-group {
+                display: flex;
+                gap: 1rem;
+                margin: 2rem 0;
+            }
+
+            .btn-group .btn {
+                flex: 1;
+            }
+        }
+
+        /* Дополнительные улучшения для высоких экранов */
+        @media screen and (min-height: 2000px) {
+            .container {
+                margin: 4rem auto;
+            }
+
+            /* Увеличиваем отступы между секциями */
+            section {
+                margin-bottom: 3rem;
+            }
+
+            /* Увеличиваем размер фото */
+            .comment-photo {
+                max-width: 200px;
+                max-height: 200px;
+            }
+
+            /* Увеличиваем высоту таблицы */
+            table {
+                max-height: 70vh;
+            }
+        }
+
+        /* Базовые стили для ����отографий */
+        .comment-photo {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 8px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Контейнер для фото в комментарии */
+        .photo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Адаптация для планшетов */
+        @media screen and (min-width: 768px) and (max-width: 1366px) {
+            /* Увеличенные размеры фото в таблице */
+            .comment-photo {
+                max-width: 150px;
+                max-height: 150px;
+            }
+
+            /* Кнйнер для фто в комментарии */
+            .photo-container {
+                flex-wrap: wrap;
+                gap: 1.5rem;
+            }
+
+            /* Стили для модального просмотра фото */
+            .photo-modal {
+                padding: 20px;
+            }
+
+            .photo-modal img {
+                max-width: 90%;
+                max-height: 80vh;
+                object-fit: contain;
+            }
+
+            /* Улучшенное отображение фото в форме редактирова����������ия */
+            #currentPhoto img {
+                max-width: 200px;
+                max-height: 200px;
+                margin: 1rem 0;
+            }
+
+            /* Улучшенный контейнер для фото в ячейке таблицы */
+            .comment-container {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            /* Стили для загрузки фото */
+            input[type="file"] {
+                padding: 1rem;
+                border: 2px dashed var(--gray-300);
+                border-radius: var(--border-radius);
+                width: 100%;
+                margin: 1rem 0;
+            }
+        }
+
+        /* Специальные тили для iPad и подобных устройств */
+        @media screen and (min-width: 768px) and (max-width: 1024px) {
+            .comment-photo {
+                max-width: 120px;
+                max-height: 120px;
+            }
+
+            .photo-container {
+                gap: 1rem;
+            }
+        }
+
+        /* Стили для больших планшетов */
+        @media screen and (min-width: 1024px) and (max-width: 1366px) {
+            .comment-photo {
+                max-width: 180px;
+                max-height: 180px;
+            }
+        }
+
+        /* Стили для портретной ориентации планшетов */
+        @media screen and (min-width: 768px) and (max-width: 1366px) and (orientation: portrait) {
+            .comment-container {
+                flex-direction: row;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+
+            .comment-photo {
+                margin: 0.5rem;
+            }
+        }
+
+        /* Улучшенный просмотр фото */
+        .photo-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .photo-modal img {
+            max-width: 95%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Анимации для фото */
+        .comment-photo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        @keyframes photoFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .photo-modal img {
+            animation: photoFadeIn 0.3s ease-out;
+        }
+
+        /* Улучшенные кнопки импорта/экспорта */
+        .import-export-buttons {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: var(--gray-100);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .import-export-buttons .btn,
+        .import-export-buttons label.btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            width: auto; /* Добавлено */
+            min-width: fit-content; /* Добавлено */
+        }
+
+        .import-export-buttons .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .import-export-buttons .btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Улучшенный поиск */
+        .search-box {
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            padding-left: 3rem;
+            border: 2px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(63, 81, 181, 0.1);
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: var(--gray-400);
+        }
+
+        /* Улучшенная таблица */
+        table {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+        }
+
+        th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+            transition: all 0.2s ease;
+        }
+
+        tr:hover td {
+            background-color: var(--gray-50);
+        }
+
+        /* Улучшенные статусы */
+        .status {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .status-active {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+
+        .status-pending {
+            background-color: #fff3e0;
+            color: #f57c00;
+            border: 1px solid #ffcc80;
+        }
+
+        .status-closed {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+
+        /* Улучшенные действя в а��лице */
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-edit, .btn-delete {
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-delete {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-edit:hover, .btn-delete:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Улучш��нно м��дал��ное окно */
+        .modal-content {
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gray-200);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--gray-200);
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--gray-200);
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Улучшенные формы */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(63, 81, 181, 0.1);
+        }
+
+        /* Улучшенная пагинация */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 2rem 0;
+        }
+
+        .pagination button {
+            padding: 0.75rem 1.25rem;
+            border: none;
+            background: white;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid var(--gray-200);
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .pagination button.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .pagination button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Анима��ии */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal.show {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* Уведомления */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            background: white;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            max-width: 400px;
+        }
+
+        .notification-success {
+            background-color: #e8f5e9;
+            border-left: 4px solid #2e7d32;
+        }
+
+        .notification-error {
+            background-color: #ffebee;
+            border-left: 4px solid #c62828;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Адаптивный дизайн */
+        @media (max-width: 768px) {
+            .import-export-buttons {
+                flex-direction: column;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .modal-content {
+                margin: 1rem;
+                padding: 1rem;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        /* Стили для улучшенной заг��узки файлов */
+        .file-upload {
+            position: relative;
+            margin: 1.5rem 0;
+        }
+
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1.5rem;
+            border: 2px dashed var(--gray-300);
+            border-radius: var(--border-radius);
+            background-color: var(--gray-50);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-label:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(63, 81, 181, 0.05);
+        }
+
+        .file-upload-label svg {
+            width: 24px;
+            height: 24px;
+            color: var(--gray-500);
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-label:hover svg {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .file-upload-text {
+            font-size: 0.95rem;
+            color: var(--gray-500);
+            text-align: center;
+        }
+
+        .file-upload-text span {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            width: 0;
+            height: 0;
+            opacity: 0;
+        }
+
+        /* Превью изображения */
+        .file-preview {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .file-preview.active {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .file-preview img {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: var(--border-radius);
+            object-fit: cover;
+        }
+
+        .file-preview-info {
+            flex: 1;
+        }
+
+        .file-preview-name {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .file-preview-size {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        .file-preview-remove {
+            padding: 0.5rem;
+            background: none;
+            border: none;
+            color: var(--danger-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-preview-remove:hover {
+            transform: scale(1.1);
+        }
+
+        /* Анимация загрузки */
+        @keyframes upload-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .file-uploading .file-upload-label {
+            animation: upload-pulse 1.5s infinite;
+            border-color: var(--primary-color);
+        }
+
+        /* Состояния ошибки */
+        .file-upload.has-error .file-upload-label {
+            border-color: var(--danger-color);
+            background-color: rgba(220, 53, 69, 0.05);
+        }
+
+        .file-upload.has-error .file-upload-text {
+            color: var(--danger-color);
+        }
+
+        /* Сообщение об ошибке */
+        .file-error-message {
+            display: none;
+            color: var(--danger-color);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .file-upload.has-error .file-error-message {
+            display: block;
+        }
+
+        /* Обновляем стили для контейнера даты */
+        .date-container {
+            display: flex;
+            gap: 0.5rem;
+            align-items: right;
+            max-width: 150px; /* Уменьшаем максимальную ширину */
+        }
+
+        .date-container input[type="datetime-local"] {
+            flex: 1;
+            min-width: 110px; /* Уменьшаем минимальную ширину */
+            width: 110px; /* Уменьшаем фиксированную ширину */
+            padding: 0.4rem; /* Уменьшаем отступы */
+            font-size: 0.85rem; /* Немного уменьшаем шрифт */
+        }
+
+        /* Стили для поля в модальном окне редактирования */
+        #editModal .date-container {
+            max-width: 150px;
+        }
+
+        #editModal .date-container input[type="datetime-local"] {
+            width: 110px;
+        }
+
+        /* Уменьшаем размер кнопки синхронизации */
+        .btn-sync {
+            padding: 0.4rem;
+            min-width: 30px;
+            height: 30px;
+            font-size: 1rem;
+        }
+
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            .date-container,
+            #editModal .date-container {
+                max-width: 100%;
+            }
+
+            .date-container input[type="datetime-local"],
+            #editModal .date-container input[type="datetime-local"] {
+                width: 100%;
+                min-width: auto;
+                font-size: 16px; /* Стандартный размер для мобильных */
+                padding: 0.5rem;
+            }
+        }
+
+        .photo-edit-container {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            padding: 15px;
+            background: var(--gray-50);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--gray-200);
+        }
+
+        .photo-preview-wrapper {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            background: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .edit-photo-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gray-100);
+            color: var(--gray-500);
+            font-size: 0.9rem;
+        }
+
+        .photo-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .photo-preview-wrapper:hover .photo-overlay {
+            opacity: 1;
+        }
+
+        .photo-preview-wrapper:hover .edit-photo-preview {
+            transform: scale(1.05);
+        }
+
+        .btn-icon {
+            background: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .btn-icon:hover {
+            transform: scale(1.1);
+            background: var(--primary-light);
+            color: white;
+        }
+
+        .photo-actions {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text-primary);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-100);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Обновляем стили для поиска */
+        const searchStyles = `
+            .search-container {
+                position: relative;
+                margin: 1rem 0;
+                max-width: 250px; /* Уменьшаем максимальную ширину */
+                width: 250px; /* Фиксированная ��ирина */
+            }
+
+            .search-box {
+                width: 100%;
+                padding: 0.75rem 1rem 0.75rem 2.5rem;
+                border: 2px solid var(--gray-300);
+                border-radius: var(--border-radius);
+                font-size: 1rem;
+                transition: all 0.3s ease;
+                background: white;
+            }
+
+            .search-box:focus {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 4px rgba(63, 81, 181, 0.1);
+                outline: none;
+            }
+
+            .search-icon {
+                position: absolute;
+                left: 0.75rem;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--gray-400);
+                pointer-events: none;
+                font-size: 1.2rem;
+            }
+
+            .search-clear {
+                position: absolute;
+                right: 0.75rem;
+                top: 50%;
+                transform: translateY(-50%);
+                background: none;
+                border: none;
+                color: var(--gray-400);
+                cursor: pointer;
+                padding: 0.25rem;
+                display: none;
+                font-size: 1.2rem;
+                transition: color 0.3s ease;
+            }
+
+            .search-clear:hover {
+                color: var(--danger-color);
+            }
+
+            .search-box:not(:placeholder-shown) + .search-clear {
+                display: block;
+            }
+
+            /* Адаптивность для мобильных устройств */
+            @media (max-width: 768px) {
+                .search-container {
+                    width: 100%;
+                    max-width: 100%;
+                    margin: 0.5rem 0;
+                }
+
+                .search-box {
+                    font-size: 16px;
+                }
+            }
+
+            /* Для планшетов */
+            @media (min-width: 769px) and (max-width: 1024px) {
+                .search-container {
+                    width: 250px;
+                    max-width: 250px;
+                }
+            }
+        `;
+
+        /* Обновляем HTML для поиска */
+        document.querySelector('.search-box').outerHTML = `
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" 
+                       class="search-box" 
+                       placeholder="Поиск..." 
+                       oninput="handleSearch(this.value)"
+                       autocomplete="off"
+                       aria-label="Поиск">
+                <button class="search-clear" 
+                        onclick="clearSearch()" 
+                        type="button" 
+                        aria-label="Очистить поиск">
+                    ✕
+                </button>
+            </div>
+        `;
+
+        /* Добавляем функцию очистки поиска */
+        function clearSearch() {
+            const searchBox = document.querySelector('.search-box');
+            searchBox.value = '';
+            handleSearch('');
+            searchBox.focus();
+        }
+
+        /* Обновляем функцию поиска */
+        function handleSearch(query) {
+            const searchClear = document.querySelector('.search-clear');
+            if (searchClear) {
+                searchClear.style.display = query ? 'block' : 'none';
+            }
+
+            const filteredRecords = records.filter(record => {
+                const searchStr = query.toLowerCase();
+                return record.name.toLowerCase().includes(searchStr) ||
+                       record.comment.toLowerCase().includes(searchStr) ||
+                       getStatusText(record.status).toLowerCase().includes(searchStr) ||
+                       record.date.includes(searchStr);
+            });
+
+            updateTable(filteredRecords);
+        }
+
+        /* Доб��вляем стили на страницу */
+        if (!document.querySelector('style[data-search-styles]')) {
+            const styleSheet = document.createElement("style");
+            styleSheet.setAttribute('data-search-styles', 'true');
+            styleSheet.textContent = searchStyles;
+            document.head.appendChild(styleSheet);
+        }
+
+        // Обновляем стили для поля даты и времени
+        const dateFieldStyles = `
+            .date-container {
+                display: flex;
+                gap: 0.5rem;
+                align-items: center;
+                max-width: 150px; /* Уменьшаем максимальную ширину */
+            }
+
+            .date-container input[type="datetime-local"] {
+                flex: 1;
+                min-width: 110px; /* Уменьшаем минимальную ширину */
+                width: 110px; /* Уменьшаем фиксированную ширину */
+                padding: 0.4rem; /* Уменьшаем отступы */
+                font-size: 0.85rem; /* Немного уменьшаем шрифт */
+            }
+
+            /* Стили для поля в модальном окне редактирования */
+            #editModal .date-container {
+                max-width: 150px;
+            }
+
+            #editModal .date-container input[type="datetime-local"] {
+                width: 110px;
+            }
+
+            /* Уменьшае�� ����азмер кнопки синхронизации */
+            .btn-sync {
+                padding: 0.4rem;
+                min-width: 30px;
+                height: 30px;
+                font-size: 1rem;
+            }
+
+            /* Адаптивность для мо����ильных устройств */
+            @media (max-width: 768px) {
+                .date-container,
+                #editModal .date-container {
+                    max-width: 100%;
+                }
+
+                .date-container input[type="datetime-local"],
+                #editModal .date-container input[type="datetime-local"] {
+                    width: 100%;
+                    min-width: auto;
+                    font-size: 16px; /* Стандартный размер для мобильных */
+                    padding: 0.5rem;
+                }
+            }
+        `;
+
+        // Добавляем стили на страницу
+        if (!document.querySelector('style[data-date-field-styles]')) {
+            const styleSheet = document.createElement("style");
+            styleSheet.setAttribute('data-date-field-styles', 'true');
+            styleSheet.textContent = dateFieldStyles;
+            document.head.appendChild(styleSheet);
+        }
+
+        /* Адаптация для разрешения 2048x1536 */
+        @media screen and (min-width: 2048px) and (min-height: 1536px) {
+            /* Основной контейнер */
+            .container {
+                max-width: 1800px;
+                margin: 3rem auto;
+                padding: 2.5rem;
+            }
+
+            /* Увеличенные размеры шрифтов */
+            body {
+                font-size: 20px;
+            }
+
+            h1 {
+                font-size: 3.5rem;
+                margin-bottom: 2.5rem;
+            }
+
+            h2 {
+                font-size: 2.5rem;
+                margin-bottom: 2rem;
+            }
+
+            /* Увеличенные поля ввода */
+            .form-group {
+                margin-bottom: 2.5rem;
+            }
+
+            .form-control,
+            input,
+            select,
+            textarea {
+                padding: 1.25rem 1.5rem;
+                font-size: 1.2rem;
+            }
+
+            /* Увеличенные кнопки */
+            .btn {
+                padding: 1.25rem 2.5rem;
+                font-size: 1.2rem;
+            }
+
+            /* Увеличенная таблица */
+            table {
+                margin: 3rem 0;
+            }
+
+            th, td {
+                padding: 1.75rem;
+                font-size: 1.2rem;
+            }
+
+            /* Статусы */
+            .status {
+                padding: 0.875rem 1.75rem;
+                font-size: 1.1rem;
+            }
+
+            /* Поиск */
+            .search-box {
+                padding: 1.5rem 1.75rem;
+                font-size: 1.2rem;
+                margin-bottom: 3rem;
+            }
+
+            /* Пагинация */
+            .pagination {
+                margin: 3rem 0;
+            }
+
+            .pagination button {
+                padding: 1.25rem 1.75rem;
+                font-size: 1.2rem;
+            }
+
+            /* Модальное окно */
+            .modal-content {
+                max-width: 1000px;
+                padding: 3.5rem;
+            }
+
+            .modal {
+                padding: 50px;
+            }
+
+            /* Фиксированная высота комментария */
+            textarea {
+                min-height: 200px;
+            }
+
+            #editComment,
+            #comment {
+                height: 200px;
+            }
+
+            /* Фото */
+            .comment-photo {
+                max-width: 200px;
+                max-height: 200px;
+            }
+
+            /* Улучшенный просмотр фото */
+            .photo-modal img {
+                max-width: 90%;
+                max-height: 85vh;
+            }
+
+            /* Кнопки импорта/экспорта */
+            .import-export-buttons {
+                gap: 1.5rem;
+                margin: 2.5rem 0;
+                padding: 1.5rem;
+            }
+
+            .import-export-buttons .btn {
+                padding: 1.25rem 2rem;
+                font-size: 1.2rem;
+            }
+
+            /* Форма редактирования фото */
+            .photo-edit-container {
+                padding: 2rem;
+            }
+
+            .photo-preview-wrapper {
+                width: 200px;
+                height: 200px;
+            }
+
+            .btn-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 1.5rem;
+            }
+
+            /* Уведомления */
+            .notification {
+                padding: 1.5rem 2rem;
+                font-size: 1.2rem;
+                max-width: 500px;
+            }
+        }
+
+        /* Оптимизация для портретной ориентации на данном разрешении */
+        @media screen and (min-width: 2048px) and (min-height: 1536px) and (orientation: portrait) {
+            .container {
+                max-width: 90%;
+            }
+
+            /* Сетка для формы */
+            .form-group {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                gap: 2.5rem;
+            }
+
+            /* Оптимизированная таблица */
+            table {
+                display: block;
+                max-height: 65vh;
+                overflow-y: auto;
+            }
+
+            /* Улучшенное отображение кнопок */
+            .btn-group {
+                display: flex;
+                gap: 1.5rem;
+                margin: 2.5rem 0;
+            }
+        }
+
+        /* Оптимизация длины полей для 2048x1536 */
+        @media screen and (min-width: 2048px) and (min-height: 1536px) {
+            /* Поля ввода фиксированной длины */
+            .form-control,
+            input[type="text"],
+            input[type="datetime-local"],
+            select {
+                max-width: 400px;
+                width: 100%;
+            }
+
+            /* Поле комментария */
+            textarea {
+                max-width: 800px;
+                width: 100%;
+            }
+
+            /* Поле поиска */
+            .search-container {
+                max-width: 500px;
+                width: 100%;
+            }
+
+            /* Контейнер даты */
+            .date-container {
+                max-width: 250px;
+                width: 100%;
+            }
+
+            .date-container input[type="datetime-local"] {
+                width: 200px;
+                min-width: 200px;
+            }
+
+            /* Поля в модальном окне */
+            .modal-content .form-control,
+            .modal-content input[type="text"],
+            .modal-content input[type="datetime-local"],
+            .modal-content select {
+                max-width: 100%;
+            }
+
+            .modal-content textarea {
+                max-width: 100%;
+            }
+
+            /* Статусы в таблице */
+            td .status {
+                min-width: 150px;
+                display: inline-block;
+                text-align: center;
+            }
+        }
+
+        /* Стили для кнопки удаления фото */
+        .photo-delete-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            color: var(--danger-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .photo-item:hover .photo-delete-btn {
+            opacity: 1;
+        }
+
+        .photo-delete-btn:hover {
+            background: var(--danger-color);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Анимация удаления */
+        .photo-item.removing {
+            animation: removePhoto 0.3s ease forwards;
+        }
+
+        @keyframes removePhoto {
+            to {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+        }
+
+        /* Подтверждение удаления */
+        .delete-confirm {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 3;
+        }
+
+        .delete-confirm.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .delete-confirm-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .delete-confirm-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .delete-confirm-btn.confirm {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .delete-confirm-btn.cancel {
+            background: white;
+            color: var(--text-primary);
+        }
+
+        .delete-confirm-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Адаптивность для больших экранов */
+        @media screen and (min-width: 2048px) and (min-height: 1536px) {
+            .photo-delete-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .delete-confirm-btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Переменные для темной темы */
+        [data-theme="dark"] {
+            --primary-color: #7986cb;
+            --primary-light: #aab6fe;
+            --primary-dark: #49599a;
+            --secondary-color: #ff80ab;
+            --success-color: #69f0ae;
+            --warning-color: #ffd740;
+            --danger-color: #ff5252;
+            
+            --text-primary: #e0e0e0;
+            --text-secondary: #9e9e9e;
+            
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2d2d2d;
+            
+            --gray-100: #2d2d2d;
+            --gray-200: #333333;
+            --gray-300: #404040;
+            --gray-400: #4d4d4d;
+            --gray-500: #666666;
+            
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.4);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.5);
+        }
+
+        /* Основные стили для темной темы */
+        [data-theme="dark"] body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .container {
+            background-color: var(--bg-secondary);
+        }
+
+        [data-theme="dark"] input,
+        [data-theme="dark"] select,
+        [data-theme="dark"] textarea {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-color: var(--gray-300);
+        }
+
+        [data-theme="dark"] input:focus,
+        [data-theme="dark"] select:focus,
+        [data-theme="dark"] textarea:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 4px rgba(121, 134, 203, 0.2);
+        }
+
+        [data-theme="dark"] table {
+            background-color: var(--bg-secondary);
+        }
+
+        [data-theme="dark"] th {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] td {
+            border-color: var(--gray-300);
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] tr:hover {
+            background-color: var(--gray-100);
+        }
+
+        /* Модальное окно в темной теме */
+        [data-theme="dark"] .modal-content {
+            background-color: var(--bg-secondary);
+        }
+
+        /* Переключатель темы */
+        .theme-switch {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+        }
+
+        .theme-switch-button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="light"] .theme-switch-button {
+            background-color: var(--gray-100);
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .theme-switch-button {
+            background-color: var(--gray-400);
+            color: var(--warning-color);
+        }
+
+        .theme-switch-button:hover {
+            transform: scale(1.1);
+        }
+
+        /* Дополнительные стили для темной темы */
+        [data-theme="dark"] .status-active {
+            background-color: rgba(105, 240, 174, 0.2);
+            color: #69f0ae;
+        }
+
+        [data-theme="dark"] .status-pending {
+            background-color: rgba(255, 215, 64, 0.2);
+            color: #ffd740;
+        }
+
+        [data-theme="dark"] .status-closed {
+            background-color: rgba(255, 82, 82, 0.2);
+            color: #ff5252;
+        }
+
+        [data-theme="dark"] .notification {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .photo-placeholder {
+            background-color: var(--bg-tertiary);
+            border-color: var(--gray-300);
+        }
+
+        /* Оптимизация длины полей */
+        .form-group {
+            max-width: 600px;
+            margin: 0 auto 1rem;
+        }
+
+        /* Текстовые поля и селекты */
+        input[type="text"],
+        input[type="datetime-local"],
+        select {
+            max-width: 300px;
+            width: 100%;
+        }
+
+        /* Поле комментария */
+        textarea {
+            max-width: 400px;
+            width: 100%;
+            min-height: 100px;
+        }
+
+        /* Поле поиска */
+        .search-box {
+            max-width: 300px;
+            width: 100%;
+        }
+
+        /* Контейнер даты */
+        .date-container {
+            max-width: 200px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .date-container input[type="datetime-local"] {
+            width: 180px;
+        }
+
+        /* Поля в модальном окне редактирования */
+        .modal-content .form-group {
+            max-width: 100%;
+        }
+
+        .modal-content input[type="text"],
+        .modal-content input[type="datetime-local"],
+        .modal-content select {
+            max-width: 250px;
+        }
+
+        .modal-content textarea {
+            max-width: 350px;
+        }
+
+        /* Адаптивность для маленьких экранов */
+        @media screen and (max-width: 768px) {
+            input[type="text"],
+            input[type="datetime-local"],
+            select,
+            textarea,
+            .search-box {
+                max-width: 100%;
+            }
+        }
+
+        /* Таблица */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            min-width: 800px;
+        }
+
+        /* Ширина колонок таблицы */
+        table th:nth-child(1), /* ID */
+        table td:nth-child(1) {
+            width: 50px;
+        }
+
+        table th:nth-child(2), /* Дата */
+        table td:nth-child(2) {
+            width: 150px;
+        }
+
+        table th:nth-child(3), /* Наименование */
+        table td:nth-child(3) {
+            width: 200px;
+        }
+
+        table th:nth-child(4), /* Статус */
+        table td:nth-child(4) {
+            width: 120px; /* Уменьшаем ширину колонки статуса */
+        }
+
+        table th:nth-child(5), /* Комментарий */
+        table td:nth-child(5) {
+            width: auto;
+            min-width: 200px;
+        }
+
+        table th:nth-child(6), /* Фото */
+        table td:nth-child(6) {
+            width: 100px;
+        }
+
+        table th:last-child, /* Действия */
+        table td:last-child {
+            width: 100px;
+        }
+
+        /* Стили для загрузки медиафайлов */
+        .media-upload-container {
+            margin-top: 1rem;
+        }
+
+        .media-preview-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .media-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .media-item img,
+        .media-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .media-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .media-item:hover .media-overlay {
+            opacity: 1;
+        }
+
+        .media-action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .media-action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .media-type-badge {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0.25rem;
+            border-radius: var(--border-radius);
+        }
+
+        .upload-placeholder {
+            border: 2px dashed var(--gray-300);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-placeholder:hover {
+            border-color: var(--primary-color);
+            background: rgba(var(--primary-rgb), 0.05);
+        }
+
+        .upload-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .media-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .media-modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+        }
+
+        .media-modal-content img,
+        .media-modal-content video {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
+        .media-modal-close {
+            position: absolute;
+            top: -2rem;
+            right: -2rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .drag-over {
+            border-color: var(--primary-color);
+            background: rgba(var(--primary-rgb), 0.1);
+        }
+
+        /* Стили для медиа-загрузчика */
+        .media-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .media-tab {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            background: var(--gray-100);
+            transition: all 0.3s ease;
+        }
+
+        .media-tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .video-preview {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .video-duration {
+            position: absolute;
+            bottom: 0.5rem;
+            right: 0.5rem;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: var(--border-radius);
+            font-size: 0.8rem;
+        }
+
+        .media-progress {
+            margin-top: 1rem;
+            background: var(--gray-100);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: var(--primary-color);
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        /* Адаптация для темной темы */
+        [data-theme="dark"] .media-tab {
+            background: var(--gray-300);
+        }
+
+        [data-theme="dark"] .media-tab.active {
+            background: var(--primary-color);
+        }
+
+        [data-theme="dark"] .video-duration {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Стили для прикрепленных видео */
+        .attached-videos-container {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .attached-video {
+            position: relative;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .video-preview {
+            position: relative;
+            aspect-ratio: 16/9;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-preview:hover .video-overlay {
+            opacity: 1;
+        }
+
+        .video-play-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .video-play-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .video-info {
+            padding: 0.5rem;
+        }
+
+        .video-name {
+            display: block;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .video-size {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .video-remove-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            color: var(--danger-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .attached-video:hover .video-remove-btn {
+            opacity: 1;
+        }
+
+        .video-preview-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .video-preview-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+        }
+
+        .video-preview-content video {
+            max-width: 100%;
+            max-height: 90vh;
+        }
+
+        .video-preview-close {
+            position: absolute;
+            top: -2rem;
+            right: -2rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* Адаптация для темной темы */
+        [data-theme="dark"] .attached-video {
+            background: var(--bg-tertiary);
+        }
+
+        [data-theme="dark"] .video-play-btn {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        [data-theme="dark"] .video-remove-btn {
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--danger-color);
+        }
+
+        /* Стили для галереи видео */
+        .video-gallery-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .video-gallery-content {
+            position: relative;
+            background: var(--bg-primary);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .video-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .video-gallery-item {
+            position: relative;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .video-player-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2100;
+        }
+
+        .video-player-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+        }
+
+        .video-player-content video {
+            max-width: 100%;
+            max-height: 90vh;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .modal-close:hover {
+            transform: scale(1.1);
+        }
+
+        /* Стили для ячейки с медиа в таблице */
+        .media-cell {
+            white-space: nowrap;
+        }
+
+        .media-cell .btn-icon {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--border-radius);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .media-cell .btn-icon:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Адаптация для темной темы */
+        [data-theme="dark"] .video-gallery-content {
+            background: var(--bg-secondary);
+        }
+
+        [data-theme="dark"] .video-gallery-item {
+            background: var(--bg-tertiary);
+        }
+
+        [data-theme="dark"] .media-cell .btn-icon {
+            background: var(--bg-tertiary);
+        }
+
+        /* Обновленные стили для select и конкретно поля статуса */
+        select, 
+        #status,
+        #editStatus {
+            max-width: 150px; /* Уменьшаем максимальную ширину */
+            width: 100%;
+        }
+
+        /* Стили для select в таблице */
+        table th:nth-child(4), /* Статус */
+        table td:nth-child(4) {
+            width: 120px; /* Уменьшаем ширину колонки статуса */
+        }
+
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            select, 
+            #status,
+            #editStatus {
+                max-width: 100%; /* На мобильных занимает всю ширину */
+            }
+        }
+
+        /* Стили для загрузки файлов в темной теме */
+        [data-theme="dark"] .file-upload-label {
+            background-color: var(--bg-tertiary);
+            border-color: var(--gray-300);
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .file-upload-label:hover {
+            background-color: var(--bg-secondary);
+            border-color: var(--primary-color);
+        }
+
+        [data-theme="dark"] .file-preview {
+            background-color: var(--bg-tertiary);
+            border-color: var(--gray-300);
+        }
+
+        [data-theme="dark"] .file-preview.active {
+            border-color: var(--primary-color);
+        }
+
+        [data-theme="dark"] .file-preview-name,
+        [data-theme="dark"] .file-preview-size {
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .file-preview-remove {
+            color: var(--danger-color);
+            background-color: var(--bg-tertiary);
+        }
+
+        [data-theme="dark"] .file-preview-remove:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        [data-theme="dark"] .file-error-message {
+            color: var(--danger-color);
+        }
+
+        [data-theme="dark"] .photo-placeholder {
+            background-color: var(--bg-tertiary);
+            border-color: var(--gray-300);
+            color: var(--text-secondary);
+        }
+
+        [data-theme="dark"] .file-upload.has-error .file-upload-label {
+            border-color: var(--danger-color);
+        }
+
+        /* Стили для кнопок в темной теме */
+        [data-theme="dark"] .btn {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--gray-300);
+        }
+
+        [data-theme="dark"] .btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        [data-theme="dark"] .btn:active {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        [data-theme="dark"] .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        [data-theme="dark"] .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        [data-theme="dark"] .btn-secondary {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-color: var(--gray-300);
+        }
+
+        [data-theme="dark"] .btn-secondary:hover {
+            background-color: var(--bg-secondary);
+            border-color: var(--primary-color);
+        }
+
+        /* Стили для поиска */
+        .search-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.1);
+        }
+
+        .search-clear {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 5px;
+            display: none;
+        }
+
+        .search-clear:hover {
+            color: var(--danger-color);
+        }
+
+        .no-results-message {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Темная тема для поиска */
+        [data-theme="dark"] .search-input {
+            background-color: var(--bg-tertiary);
+            border-color: var(--gray-300);
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
+        }
+
+        [data-theme="dark"] .search-clear {
+            color: var(--text-secondary);
+        }
+
+        [data-theme="dark"] .search-clear:hover {
+            color: var(--danger-color);
+        }
+
+        /* Предотвращение мерцания при загрузке */
+        .theme-toggle {
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            font-size: 1.5rem;
+            transition: transform 0.2s ease;
+            pointer-events: auto; /* Убеждаемся, что события мыши работают */
+            position: relative; /* Для корректного отображения */
+            z-index: 1000; /* Убеждаемся, что кнопка поверх других элементов */
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+    <!-- Добавляем переключатель темы в начало body -->
+    <div class="theme-switch">
+        <button 
+            class="theme-toggle" 
+            type="button"
+            title="Переключить тему">
+            ☀️
+        </button>
+    </div>
+
+    <div class="container">
+        <h1>Папины коробочки</h1>
+        
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Поиск по реестру..." class="search-input">
+            <button class="search-clear" onclick="clearSearch()" aria-label="Очистить поиск">✕</button>
+        </div>
+
+        <!-- Форма добавления записи -->
+        <div id="addForm">
+            <h2>Добавить новую запись</h2>
+            <div class="form-group" style="display: flex; gap: 8rem; align-items: flex-start; justify-content: flex-start;">
+                <div style="flex: 0 1 30%;">
+                    <label for="name">Наименование</label>
+                    <input type="text" id="name" class="form-control" required>
+                </div>
+                <div style="flex: 0 1 40%;">
+                    <label for="status">...........Статус.........</label>
+                    <select id="status" class="form-control" required>
+                        <option value="active">Активный</option>
+                        <option value="pending">В ожидании</option>
+                        <option value="closed">Закрыт</option>
+                    </select>
+                </div>
+                <div style="flex: 0 1 30%;">
+                    <label for="date">Дата и время:</label>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <input type="datetime-local" id="date" required>
+                        <button class="btn btn-sync" onclick="syncDate()" title="Установить текущую дату и время">
+                            ↻
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="comment">Комментарий:</label>
+                <textarea id="comment" rows="3"></textarea>
+                <label for="photo">Прикрепить фото:</label>
+                <div class="file-upload">
+                    
+                    <input type="file" id="photo" accept="image/*" onchange="handleFileSelect(this)">
+                    
+                    <div class="file-preview">
+                        <img id="preview-image" src="" alt="Предпросмотр">
+                        <div class="file-preview-info">
+                            <div class="file-preview-name"></div>
+                            <div class="file-preview-size"></div>
+                        </div>
+                        <button type="button" class="file-preview-remove" onclick="removeFile()">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 6L6 18M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="file-error-message"></div>
+                </div>
+            </div>
+            <button class="btn" onclick="addRecord()">Добавить запись</button>
+        </div>
+
+        <!-- Обновленное модальное окно для редактирования -->
+        <div id="editModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Редактировать запись</h2>
+                    <button class="close-btn" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="form-group">
+                    <label for="editDate">Дата и время:</label>
+                    <div class="date-container">
+                        <input type="datetime-local" id="editDate" required>
+                        <button class="btn btn-sync" onclick="syncEditDate()" title="Установить текущую дату и время">
+                            ↻
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editName">Наименование:</label>
+                    <input type="text" id="editName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editStatus">Статус:</label>
+                    <select id="editStatus" required>
+                        <option value="active">Активный</option>
+                        <option value="pending">В обработке</option>
+                        <option value="closed">Закрыт</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editComment">Комментарий:</label>
+                    <textarea id="editComment" rows="3"></textarea>
+                    <label for="editPhoto">Прикрепить фото:</label>
+                    <input type="file" id="editPhoto" accept="image/*">
+                    <div id="currentPhoto"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="saveEdit()">��охранить</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Отмена</button>
+                </div>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th onclick="sortTable('id')">№ ↕</th>
+                    <th onclick="sortTable('date')">Дата ↕</th>
+                    <th onclick="sortTable('name')">Наименование ↕</th>
+                    <th onclick="sortTable('status')">Статус ↕</th>
+                    <th>Комментарий</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody id="recordsTable">
+            </tbody>
+        </table>
+
+        <!-- Обновленные кнопки импорта/экспорта -->
+        <div class="import-export-buttons">
+            <button class="btn btn-primary" onclick="exportToCSV()">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Экспорт в CSV
+            </button>
+            <label for="csvFile" class="btn btn-primary">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Импорт из CSV
+            </label>
+            <input type="file" id="csvFile" accept=".csv" style="display: none;" onchange="importFromCSV(this)">
+        </div>
+
+        <!-- Добавляем пагинацию -->
+        <div class="pagination">
+        </div>
+    </div>
+
+    <script>
+        let records = [];
+        let currentEditId = null;
+        let sortField = 'id';
+        let sortDirection = 'asc';
+        let currentPage = 1;
+        const recordsPerPage = 10;
+
+        // Кэширование DOM элементов
+        const DOM = {
+            init() {
+                this.tableBody = document.getElementById('recordsTable');
+                this.searchInput = document.getElementById('searchInput');
+                this.mediaGrid = document.getElementById('mediaGrid');
+                this.progressBar = document.querySelector('.media-progress');
+                return this;
+            },
+            
+            get(id) {
+                return document.getElementById(id);
+            }
+        };
+
+        // Менеджер записей с поддержкой IndexedDB
+        const RecordManager = {
+            async init() {
+                this.db = await this.openDatabase();
+                return this;
+            },
+
+            async openDatabase() {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open('RecordsDB', 1);
+                    
+                    request.onerror = () => reject(request.error);
+                    request.onsuccess = () => resolve(request.result);
+                    
+                    request.onupgradeneeded = (e) => {
+                        const db = e.target.result;
+                        if (!db.objectStoreNames.contains('records')) {
+                            db.createObjectStore('records', { keyPath: 'id' });
+                        }
+                    };
+                });
+            },
+
+            async saveRecord(record) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['records'], 'readwrite');
+                    const store = transaction.objectStore('records');
+                    
+                    const request = store.put(record);
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            },
+
+            async getRecords() {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['records'], 'readonly');
+                    const store = transaction.objectStore('records');
+                    const request = store.getAll();
+                    
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            }
+        };
+
+        // Оптимизированный рендеринг таблицы
+        class TableRenderer {
+            constructor(container) {
+                this.container = container;
+                this.virtualScroll = new VirtualScroll(container);
+                this.debounceRender = debounce(this.render.bind(this), 16);
+            }
+
+            render(records) {
+                const fragment = document.createDocumentFragment();
+                
+                records.forEach(record => {
+                    const row = this.createRow(record);
+                    fragment.appendChild(row);
+                });
+
+                this.container.innerHTML = '';
+                this.container.appendChild(fragment);
+            }
+
+            createRow(record) {
+                const row = document.createElement('tr');
+                row.innerHTML = this.getRowTemplate(record);
+                return row;
+            }
+
+            getRowTemplate(record) {
+                return `
+                    <td>${record.id}</td>
+                    <td>${formatDate(record.date)}</td>
+                    <td>${escapeHtml(record.name)}</td>
+                    <td><span class="status status-${record.status}">${getStatusText(record.status)}</span></td>
+                    <td>${escapeHtml(record.comment)}</td>
+                    <td>${this.getActionButtons(record.id)}</td>
+                `;
+            }
+
+            getActionButtons(id) {
+                return `
+                    <button class="btn-icon" onclick="editRecord(${id})">✏️</button>
+                    <button class="btn-icon" onclick="deleteRecord(${id})">🗑️</button>
+                `;
+            }
+        }
+
+        // Виртуальный скроллинг для больших списков
+        class VirtualScroll {
+            constructor(container, options = {}) {
+                this.container = container;
+                this.rowHeight = options.rowHeight || 50;
+                this.bufferSize = options.bufferSize || 10;
+                this.visibleRows = Math.ceil(container.clientHeight / this.rowHeight);
+                
+                this.setupScroll();
+            }
+
+            setupScroll() {
+                this.container.addEventListener('scroll', debounce(() => {
+                    this.updateVisibleRows();
+                }, 16));
+            }
+
+            updateVisibleRows() {
+                const scrollTop = this.container.scrollTop;
+                const startIndex = Math.floor(scrollTop / this.rowHeight);
+                const endIndex = startIndex + this.visibleRows + this.bufferSize;
+                
+                this.onUpdate?.(startIndex, endIndex);
+            }
+        }
+
+        // Утилиты
+        function debounce(fn, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => fn.apply(this, args), wait);
+            };
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function formatDate(date) {
+            return new Intl.DateTimeFormat('ru-RU', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            }).format(new Date(date));
+        }
+
+        // Инициализация
+        async function init() {
+            const dom = DOM.init();
+            const recordManager = await RecordManager.init();
+            const tableRenderer = new TableRenderer(dom.tableBody);
+            
+            // Загрузка начальных да��ных
+            const records = await recordManager.getRecords();
+            tableRenderer.render(records);
+        }
+
+        // Загрузка данных при старте
+        window.onload = function() {
+            const savedRecords = localStorage.getItem('records');
+            if (savedRecords) {
+                records = JSON.parse(savedRecords);
+                updateTable();
+            }
+            // Устанавливаем текущую дату при загрузке страницы
+            syncDate();
+        }
+
+        // Поиск по таблице
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchText = e.target.value.toLowerCase();
+            const filteredRecords = records.filter(record => 
+                record.name.toLowerCase().includes(searchText) ||
+                record.status.toLowerCase().includes(searchText) ||
+                record.comment.toLowerCase().includes(searchText) ||
+                record.date.includes(searchText)  // Добавляем поиск по дате
+            );
+            currentPage = 1;  // Сбрасываем на первую страницу при поиске
+            updateTable(filteredRecords);
+        });
+
+        // Сортировка таблицы
+        function sortTable(field) {
+            const headers = document.querySelectorAll('th');
+            headers.forEach(header => {
+                if (header.textContent.includes(field)) {
+                    header.style.transition = 'background-color 0.3s';
+                    header.style.backgroundColor = '#e8f5e9';
+                    setTimeout(() => {
+                        header.style.backgroundColor = '#f8f9fa';
+                    }, 300);
+                }
+            });
+
+            if (sortField === field) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortField = field;
+                sortDirection = 'asc';
+            }
+
+            records.sort((a, b) => {
+                let comparison = 0;
+                if (a[field] > b[field]) comparison = 1;
+                if (a[field] < b[field]) comparison = -1;
+                return sortDirection === 'asc' ? comparison : -comparison;
+            });
+
+            updateTable();
+        }
+
+        // Улучшенная обработка ошибок и валидация
+        function addRecord() {
+            try {
+                const dateTime = document.getElementById('date').value;
+                const name = document.getElementById('name').value;
+                const status = document.getElementById('status').value;
+                const comment = document.getElementById('comment').value;
+                const photoFile = document.getElementById('photo').files[0];
+
+                // Валидация обязательных полей
+                if (!dateTime || !name || !status || !comment) {
+                    throw new Error('Пожалуйста, заполните все обязательные поля');
+                }
+
+                // ��алидация даты
+                const selectedDate = new Date(dateTime);
+                if (selectedDate > new Date()) {
+                    throw new Error('Дата и время не могут быть больше текущих');
+                }
+
+                const reader = new FileReader();
+                reader.onerror = () => {
+                    throw new Error('Ошибка при чтении файла');
+                };
+
+                reader.onload = function(e) {
+                    try {
+                        const newRecord = {
+                            id: records.length > 0 ? Math.max(...records.map(r => r.id)) + 1 : 1,
+                            date: dateTime,
+                            name: name.trim(),
+                            status: status,
+                            comment: comment.trim(),
+                            photo: photoFile ? e.target.result : null
+                        };
+
+                        records.push(newRecord);
+                        updateTable();
+                        clearForm();
+                        saveToLocalStorage();
+                        showNotification('Запись успешно добавлена', 'success');
+                    } catch (error) {
+                        showNotification(error.message, 'error');
+                    }
+                };
+
+                if (photoFile) {
+                    if (photoFile.size > 5 * 1024 * 1024) { // 5MB limit
+                        throw new Error('Размер файла не должен превышать 5MB');
+                    }
+                    reader.readAsDataURL(photoFile);
+                } else {
+                    reader.onload();
+                }
+            } catch (error) {
+                showNotification(error.message, 'error');
+            }
+        }
+
+        function deleteRecord(id) {
+            if (confirm('Вы уверены, что хотите удалить эту запись?')) {
+                records = records.filter(record => record.id !== id);
+                updateTable();
+                saveToLocalStorage();
+            }
+        }
+
+        function editRecord(id) {
+            const record = records.find(r => r.id === id);
+            if (!record) return;
+
+            const modal = document.getElementById('editModal');
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Редактировать запись</h2>
+                        <button class="close-btn" onclick="closeModal('editModal')">&times;</button>
+                    </div>
+                    <form id="editForm" onsubmit="saveEdit(${id}); return false;">
+                        <div class="form-group">
+                            <label for="editName">Наименование:</label>
+                            <input type="text" id="editName" value="${escapeHtml(record.name)}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editDate">Дата:</label>
+                            <div class="date-container">
+                                <input type="datetime-local" id="editDate" value="${record.date}" required>
+                                <button type="button" class="btn btn-sync" onclick="syncEditDate()" title="Установить текущую дату и время">↻</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="editStatus">Статус:</label>
+                            <select id="editStatus">
+                                <option value="active" ${record.status === 'active' ? 'selected' : ''}>Активный</option>
+                                <option value="pending" ${record.status === 'pending' ? 'selected' : ''}>В обработке</option>
+                                <option value="closed" ${record.status === 'closed' ? 'selected' : ''}>Закрыт</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editComment">Комментарий:</label>
+                            <textarea id="editComment">${escapeHtml(record.comment)}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Фото:</label>
+                            <div class="photo-edit-container">
+                                <div class="photo-preview-wrapper">
+                                    ${record.photo ? `
+                                        <img src="${record.photo}" class="edit-photo-preview" id="editPhotoPreview">
+                                        <div class="photo-overlay">
+                                            <button type="button" class="btn-icon" onclick="showFullImage('${record.photo}')" title="Просмотр">
+                                                <span>🔍</span>
+                                            </button>
+                                            <button type="button" class="btn-icon" onclick="removeEditPhoto()" title="Удалить">
+                                                <span>🗑️</span>
+                                            </button>
+                                        </div>
+                                    ` : `
+                                        <div class="photo-placeholder">
+                                            <span>Нет фото</span>
+                                        </div>
+                                    `}
+                                </div>
+                                <div class="photo-actions">
+                                    <input type="file" id="editPhoto" accept="image/*" style="display: none;" onchange="handleEditPhotoChange(event)">
+                                    <button type="button" class="btn btn-primary" onclick="document.getElementById('editPhoto').click()">
+                                        ${record.photo ? 'Изменить фото' : 'Добавить фото'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" onclick="closeModal('editModal')">Отмена</button>
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            
+            modal.style.display = "block";
+        }
+
+        // Функция для обработки изменения фото
+        function handleEditPhotoChange(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Проверка типа ��айла
+            if (!file.type.startsWith('image/')) {
+                showNotification('Пожалуйста, выберите изображение', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Обновляем превью
+                const preview = document.getElementById('editPhotoPreview');
+                const previewWrapper = document.querySelector('.photo-preview-wrapper');
+                
+                if (preview) {
+                    preview.src = e.target.result;
+                } else {
+                    // Если превью нет, создаем новое
+                    previewWrapper.innerHTML = `
+                        <img src="${e.target.result}" class="edit-photo-preview" id="editPhotoPreview">
+                        <div class="photo-overlay">
+                            <button type="button" class="btn-icon" onclick="showFullImage('${e.target.result}')" title="Просмотр">
+                                <span>🔍</span>
+                            </button>
+                            <button type="button" class="btn-icon" onclick="removeEditPhoto()" title="Удалить">
+                                <span>🗑️</span>
+                            </button>
+                        </div>
+                    `;
+                }
+
+                // Обновляем текст кнопки
+                const uploadButton = previewWrapper.nextElementSibling.querySelector('.btn');
+                if (uploadButton) {
+                    uploadButton.textContent = 'Изменить фото';
+                }
+
+                // Сохраняем временное изображение
+                tempEditPhoto = e.target.result;
+            };
+
+            reader.onerror = function() {
+                showNotification('Ошибка при чтении файла', 'error');
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        // Функция для удаления фото при редактировании
+        function removeEditPhoto() {
+            const previewWrapper = document.querySelector('.photo-preview-wrapper');
+            if (!previewWrapper) return;
+
+            previewWrapper.innerHTML = `
+                <div class="photo-placeholder">
+                    <span>Нет фото</span>
+                </div>
+            `;
+
+            // Обновляем текст кнопки
+            const uploadButton = previewWrapper.nextElementSibling.querySelector('.btn');
+            if (uploadButton) {
+                uploadButton.textContent = 'Добавить фото';
+            }
+
+            // Очищаем input файла
+            const fileInput = document.getElementById('editPhoto');
+            if (fileInput) {
+                fileInput.value = '';
+            }
+
+            // Очищаем временное изображение
+            tempEditPhoto = null;
+        }
+
+        function saveEdit(id) {
+            try {
+                const record = records.find(r => r.id === id);
+                if (!record) throw new Error('Запись не найдена');
+
+                // Получаем значения полей
+                const date = document.getElementById('editDate').value;
+                const name = document.getElementById('editName').value;
+                const status = document.getElementById('editStatus').value;
+                const comment = document.getElementById('editComment').value;
+
+                // Валидация
+                if (!date || !name || !status) {
+                    throw new Error('Пожалуйста, заполните все об��зательные поля');
+                }
+
+                // Обновляем данные записи
+                record.date = date;
+                record.name = name;
+                record.status = status;
+                record.comment = comment;
+
+                // Обновляем фото, если оно было изменено
+                if (tempEditPhoto !== undefined) {
+                    record.photo = tempEditPhoto;
+                }
+
+                // Сохраняем изменения
+                updateTable();
+                saveToLocalStorage();
+                closeModal();
+                showNotification('Запись успешно обновлена', 'success');
+
+                // Очищаем временное изображение
+                tempEditPhoto = undefined;
+            } catch (error) {
+                showNotification(error.message, 'error');
+            }
+        }
+
+        // Глобальная переменная для хранения временного изображения
+        let tempEditPhoto;
+
+        // Функция для отображения полноразмерного изображения
+        function showFullImage(src) {
+            const modal = document.createElement('div');
+            modal.className = 'photo-modal';
+            modal.innerHTML = `
+                <img src="${src}" alt="Полноразмерное фото">
+                <button class="photo-modal-close" onclick="this.parentElement.remove()">✕</button>
+            `;
+            document.body.appendChild(modal);
+
+            // Закрытие по клику вне изображения
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+
+            // Закрытие по Escape
+            document.addEventListener('keydown', function closeOnEsc(e) {
+                if (e.key === 'Escape') {
+                    modal.remove();
+                    document.removeEventListener('keydown', closeOnEsc);
+                }
+            });
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('editModal');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+            currentEditId = null;
+        }
+
+        // Улучшенное сохранение в localStorage
+        function saveToLocalStorage() {
+            try {
+                localStorage.setItem('records', JSON.stringify(records));
+                return true;
+            } catch (error) {
+                console.error('Ошибка при сохранении данных:', error);
+                showNotification('Ошибка при сохранении данных', 'error');
+                return false;
+            }
+        }
+
+        // Улучшенная загрузка данных
+        function loadFromLocalStorage() {
+            try {
+                const savedRecords = localStorage.getItem('records');
+                if (savedRecords) {
+                    records = JSON.parse(savedRecords);
+                    if (!Array.isArray(records)) {
+                        throw new Error('Некорректный формат данных');
+                    }
+                    updateTable();
+                    return true;
+                }
+                return false;
+            } catch (error) {
+                console.error('Ошибка при загрузке данных:', error);
+                showNotification('Ошибка при загрузке данных', 'error');
+                records = [];
+                return false;
+            }
+        }
+
+        // Улучшенное обновление таблицы
+        function updateTable(displayRecords = records) {
+            try {
+                const startIndex = (currentPage - 1) * recordsPerPage;
+                const endIndex = startIndex + recordsPerPage;
+                const paginatedRecords = displayRecords.slice(startIndex, endIndex);
+                
+                const tbody = document.getElementById('recordsTable');
+                if (!tbody) throw new Error('Таблица не найдена');
+                
+                tbody.innerHTML = '';
+
+                paginatedRecords.forEach(record => {
+                    const statusClass = `status-${record.status}`;
+                    const photoHtml = record.photo ? 
+                        `<img src="${record.photo}" class="comment-photo" onclick="showFullImage('${record.photo}')" alt="Фото">` : '';
+                    
+                    // Форматируем дату и время с сокращенным годом
+                    const dateObj = new Date(record.date);
+                    const formattedDateTime = dateObj.toLocaleString('ru-RU', {
+                        year: '2-digit',  // Изменено с 'numeric' на '2-digit'
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${record.id}</td>
+                        <td>${formattedDateTime}</td>
+                        <td>${escapeHtml(record.name)}</td>
+                        <td><span class="${statusClass}">${getStatusText(record.status)}</span></td>
+                        <td class="comment-container">
+                            ${escapeHtml(record.comment)}
+                            ${photoHtml}
+                        </td>
+                        <td>
+                            <button class="btn btn-edit" onclick="editRecord(${record.id})">Изменить</button>
+                            <button class="btn btn-delete" onclick="deleteRecord(${record.id})">Удалить</button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                updatePagination(displayRecords.length);
+            } catch (error) {
+                console.error('Ошибка при обновлении таблицы:', error);
+                showNotification('Ошибка при обновлении таблицы', 'error');
+            }
+        }
+
+        // Защита от XSS
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function getStatusText(status) {
+            const statusMap = {
+                'active': 'Активный',
+                'pending': 'В обработке',
+                'closed': 'Закрыт'
+            };
+            return statusMap[status] || status;
+        }
+
+        // Очистка формы
+        function clearForm() {
+            document.getElementById('name').value = '';
+            document.getElementById('status').value = '';
+            document.getElementById('comment').value = '';
+            document.getElementById('photo').value = '';
+            syncDate(); // Устанавливаем текущую дату вместо очистки
+        }
+
+        // Добавляем возможность закрытия по клику вне модального окна
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Улучшенная функция просмотра фото
+        function showFullImage(src) {
+            const modal = document.createElement('div');
+            modal.className = 'photo-modal';
+            
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = 'Полноразмерное фото';
+            
+            modal.appendChild(img);
+            document.body.appendChild(modal);
+            
+            // Закрытие по клику
+            modal.onclick = function() {
+                modal.classList.add('fade-out');
+                setTimeout(() => modal.remove(), 300);
+            };
+
+            // Закрытие по Escape
+            document.addEventListener('keydown', function closeOnEsc(e) {
+                if (e.key === 'Escape') {
+                    modal.remove();
+                    document.removeEventListener('keydown', closeOnEsc);
+                }
+            });
+
+            // Предотвращение скролла на заднем фоне
+            document.body.style.overflow = 'hidden';
+            modal.addEventListener('remove', () => {
+                document.body.style.overflow = '';
+            });
+        }
+
+        // Добавляем функции для синхронизации даты
+        function getCurrentDate() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
+
+        function syncDate() {
+            document.getElementById('date').value = getCurrentDate();
+        }
+
+        function syncEditDate() {
+            document.getElementById('editDate').value = getCurrentDate();
+        }
+
+        // Автосохранение каждые 30 секунд
+        setInterval(saveToLocalStorage, 30000);
+
+        // Если вы хо��ите показывать предупреждение только при наличии несохраненных изменений,
+        // можно использовать такой вариант:
+        let hasUnsavedChanges = false;
+
+        function markUnsavedChanges() {
+            hasUnsavedChanges = true;
+        }
+
+        function markSavedChanges() {
+            hasUnsavedChanges = false;
+        }
+
+        window.onbeforeunload = function(e) {
+            if (hasUnsavedChanges) {
+                return "Есть несохраненные изменения. Вы уверены, что хотите покинуть страницу?";
+            }
+        };
+
+        // Обновленная функция экспорта
+        function exportToCSV() {
+            try {
+                let csv = 'ID,Наименование,Cтатус,Комментарий,Дата,Фото\n';
+                records.forEach(record => {
+                    const dateParts = record.date.split('-');
+                    const formattedDate = dateParts.length === 3 ? 
+                        `${parseInt(dateParts[2])}/${parseInt(dateParts[1])}/${dateParts[0].slice(-2)}` : record.date;
+
+                    const row = [
+                        record.id,
+                        `"${record.name.replace(/"/g, '""')}"`,
+                        `"${getStatusText(record.status)}"`,
+                        `"${record.comment.replace(/"/g, '""')}"`,
+                        formattedDate,
+                        record.photo ? `"${record.photo}"` : '""' // Добавляем фото в Base64
+                    ].join(',');
+                    csv += row + '\n';
+                });
+
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `registry_export_${new Date().toISOString().split('T')[0]}.csv`;
+                link.click();
+                URL.revokeObjectURL(link.href);
+                showNotification('Экспорт успешно завершен', 'success');
+            } catch (error) {
+                console.error('Ошибка при экспорте:', error);
+                showNotification('Ошибка при экспорте данных', 'error');
+            }
+        }
+
+        function updatePagination(totalRecords) {
+            const totalPages = Math.ceil(totalRecords / recordsPerPage);
+            const pagination = document.createElement('div');
+            pagination.className = 'pagination';
+            
+            // Кнопка "Предыдущая"
+            if (currentPage > 1) {
+                const prevButton = document.createElement('button');
+                prevButton.textContent = '←';
+                prevButton.onclick = () => {
+                    currentPage--;
+                    updateTable();
+                };
+                pagination.appendChild(prevButton);
+            }
+
+            // Номера страниц
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.className = i === currentPage ? 'active' : '';
+                pageButton.onclick = () => {
+                    currentPage = i;
+                    updateTable();
+                };
+                pagination.appendChild(pageButton);
+            }
+
+            // ��нопка "Следующая"
+            if (currentPage < totalPages) {
+                const nextButton = document.createElement('button');
+                nextButton.textContent = '→';
+                nextButton.onclick = () => {
+                    currentPage++;
+                    updateTable();
+                };
+                pagination.appendChild(nextButton);
+            }
+
+            // Обновляем пагнацию на странице
+            const existingPagination = document.querySelector('.pagination');
+            if (existingPagination) {
+                existingPagination.remove();
+            }
+            document.querySelector('table').after(pagination);
+        }
+
+        // Уведомления
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.add('notification-hide');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Закрытие по нажатию Escape
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Обновленная функция импорта
+        function importFromCSV(input) {
+            try {
+                const file = input.files[0];
+                if (!file) {
+                    throw new Error('Файл не выбран');
+                }
+
+                if (!file.name.endsWith('.csv')) {
+                    throw new Error('Пожалуйста, выберите файл CSV');
+                }
+
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    try {
+                        const text = e.target.result;
+                        const lines = text.split('\n').map(line => line.trim()).filter(line => line);
+                        
+                        // Проверяем заголовок
+                        const expectedHeader = 'ID,Наименование,Cтатус,Комментарий,Дата,Фото';
+                        if (!lines[0].includes(expectedHeader)) {
+                            throw new Error(`Неверный формат заголовка. Ожидается: ${expectedHeader}`);
+                        }
+
+                        const newRecords = [];
+                        const errors = [];
+                        
+                        const progressModal = showProgressModal('Импорт данных...');
+                        
+                        for (let i = 1; i < lines.length; i++) {
+                            try {
+                                updateProgress(progressModal, (i / lines.length) * 100);
+                                
+                                const [id, name, status, comment, date, photo] = parseCSVLine(lines[i]);
+
+                                if (!name || !status || !date) {
+                                    errors.push(`Строка ${i + 1}: Пропущены обязательные поля`);
+                                    continue;
+                                }
+
+                                if (!isValidDate(date)) {
+                                    errors.push(`Строка ${i + 1}: Неверный формат даты (требуется Д/М/ГГ)`);
+                                    continue;
+                                }
+
+                                // Проверка корректности Base64 изображения
+                                if (photo && !isValidBase64Image(photo)) {
+                                    errors.push(`Строка ${i + 1}: Некорректный формат изображения`);
+                                    continue;
+                                }
+
+                                const [day, month, year] = date.split('/');
+                                const fullYear = '20' + year;
+                                const formattedMonth = month.padStart(2, '0');
+                                const formattedDay = day.padStart(2, '0');
+                                const formattedDate = `${fullYear}-${formattedMonth}-${formattedDay}`;
+
+                                const statusMap = {
+                                    'Активный': 'active',
+                                    'В обработке': 'pending',
+                                    'Закрыт': 'closed'
+                                };
+
+                                const record = {
+                                    id: parseInt(id) || Math.max(...records.map(r => r.id), 0) + 1,
+                                    name: name,
+                                    status: statusMap[status] || 'active',
+                                    comment: comment || '',
+                                    date: formattedDate,
+                                    photo: photo || null
+                                };
+
+                                newRecords.push(record);
+                            } catch (error) {
+                                errors.push(`Строка ${i + 1}: ${error.message}`);
+                            }
+                        }
+
+                        closeProgressModal(progressModal);
+
+                        const message = `
+                            Найдено записей: ${newRecords.length}
+                            ${errors.length > 0 ? `\nОшибки (${errors.length}):\n${errors.join('\n')}` : ''}
+                            \nПродолжить импорт?
+                        `;
+
+                        if (newRecords.length > 0 && confirm(message)) {
+                            const mergeStrategy = await showMergeDialog();
+                            if (mergeStrategy === 'merge') {
+                                records = [...records, ...newRecords];
+                            } else if (mergeStrategy === 'replace') {
+                                records = newRecords;
+                            }
+                            
+                            updateTable();
+                            saveToLocalStorage();
+                            showNotification(`Импорт завершен успешно. Добавлено ${newRecords.length} записей`, 'success');
+                        }
+                    } catch (error) {
+                        console.error('Ошибка при обработке файла:', error);
+                        showNotification('Ошибка при обработке файла: ' + error.message, 'error');
+                    }
+                };
+
+                reader.onerror = function() {
+                    showNotification('Ош��бка при чтении файла', 'error');
+                };
+
+                reader.readAsText(file, 'UTF-8');
+            } catch (error) {
+                console.error('Ошибка при импорте:', error);
+                showNotification('Ошибка при импорте: ' + error.message, 'error');
+            } finally {
+                input.value = '';
+            }
+        }
+
+        // Вспомогательные функции
+
+        function parseCSVLine(line) {
+            const fields = [];
+            let field = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                
+                if (char === '"') {
+                    if (inQuotes && line[i + 1] === '"') {
+                        field += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === ',' && !inQuotes) {
+                    fields.push(field.trim());
+                    field = '';
+                } else {
+                    field += char;
+                }
+            }
+            
+            fields.push(field.trim());
+            return fields;
+        }
+
+        function isValidDate(dateString) {
+            // Проверяем формат D/M/YY
+            const regex = /^(\d{1,2})\/(\d{1,2})\/(\d{2})$/;
+            const match = dateString.match(regex);
+            
+            if (!match) return false;
+            
+            const [, day, month, year] = match;
+            const fullYear = '20' + year; // Предполагаем, что все даты в 21 веке
+            
+            const date = new Date(fullYear, month - 1, day);
+            return date instanceof Date && !isNaN(date) &&
+                   date.getDate() == day &&
+                   date.getMonth() == month - 1 &&
+                   date.getFullYear() == fullYear;
+        }
+
+        function showProgressModal(title) {
+            const modal = document.createElement('div');
+            modal.className = 'modal show';
+            modal.innerHTML = `
+                <div class="modal-content" style="text-align: center;">
+                    <h3>${title}</h3>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%"></div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            return modal;
+        }
+
+        function updateProgress(modal, percent) {
+            const progress = modal.querySelector('.progress');
+            if (progress) {
+                progress.style.width = `${percent}%`;
+            }
+        }
+
+        function closeProgressModal(modal) {
+            modal.remove();
+        }
+
+        async function showMergeDialog() {
+            return new Promise((resolve) => {
+                const dialog = document.createElement('div');
+                dialog.className = 'modal show';
+                dialog.innerHTML = `
+                    <div class="modal-content">
+                        <h3>Выберите способ импорта</h3>
+                        <div class="btn-group" style="margin-top: 20px;">
+                            <button class="btn btn-primary" onclick="this.closest('.modal').dataset.choice='merge'">
+                                Добавить к существующим
+                            </button>
+                            <button class="btn btn-danger" onclick="this.closest('.modal').dataset.choice='replace'">
+                                Заменить существующие
+                            </button>
+                            <button class="btn btn-secondary" onclick="this.closest('.modal').dataset.choice='cancel'">
+                                Отмена
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(dialog);
+                
+                dialog.addEventListener('click', (e) => {
+                    const choice = dialog.dataset.choice;
+                    dialog.remove();
+                    resolve(choice);
+                });
+            });
+        }
+
+        // Добавляем стили для прогресс-бара
+        const style = document.createElement('style');
+        style.textContent = `
+            .progress-bar {
+                width: 100%;
+                height: 20px;
+                background-color: var(--gray-200);
+                border-radius: 10px;
+                overflow: hidden;
+                margin: 20px 0;
+            }
+            
+            .progress {
+                height: 100%;
+                background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
+                transition: width 0.3s ease;
+            }
+            
+            .btn-group {
+                display: flex;
+                gap: 10px;
+                justify-content: center;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Функция обработки выбора файла
+        function handleFileSelect(input) {
+            const fileUpload = input.closest('.file-upload');
+            const preview = fileUpload.querySelector('.file-preview');
+            const previewImg = preview.querySelector('img');
+            const previewName = preview.querySelector('.file-preview-name');
+            const previewSize = preview.querySelector('.file-preview-size');
+            const errorMessage = fileUpload.querySelector('.file-error-message');
+            
+            // Сброс предыдущих ошибок
+            fileUpload.classList.remove('has-error');
+            errorMessage.textContent = '';
+            
+            const file = input.files[0];
+            if (file) {
+                // Проверка типа файла
+                if (!file.type.startsWith('image/')) {
+                    fileUpload.classList.add('has-error');
+                    errorMessage.textContent = 'Пожалуйста, выберите изображение';
+                    input.value = '';
+                    return;
+                }
+                
+                // Показ превью
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    previewName.textContent = file.name;
+                    previewSize.textContent = formatFileSize(file.size);
+                    preview.classList.add('active');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Функция удаления файла
+        function removeFile() {
+            const fileUpload = document.querySelector('.file-upload');
+            const input = fileUpload.querySelector('input[type="file"]');
+            const preview = fileUpload.querySelector('.file-preview');
+            
+            input.value = '';
+            preview.classList.remove('active');
+            fileUpload.classList.remove('has-error');
+        }
+
+        // Форматирование размера файла
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Добавление поддержки drag and drop
+        const fileUpload = document.querySelector('.file-upload');
+        const dropZone = fileUpload.querySelector('.file-upload-label');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            dropZone.classList.add('highlight');
+        }
+
+        function unhighlight(e) {
+            dropZone.classList.remove('highlight');
+        }
+
+        dropZone.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            const input = fileUpload.querySelector('input[type="file"]');
+            
+            input.files = files;
+            handleFileSelect(input);
+        }
+
+        // Добавляем функцию проверки Base64 изображения
+        function isValidBase64Image(str) {
+            if (!str) return true; // Пустое значение считаем валидным
+            
+            try {
+                // Проверяем, начинается ли строка с data:image
+                if (!str.startsWith('data:image/')) {
+                    return false;
+                }
+
+                // Проверяем формат Base64
+                const base64Regex = /^data:image\/(jpeg|jpg|png|gif);base64,([A-Za-z0-9+/=])+$/;
+                return base64Regex.test(str);
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function deletePhoto(photoId, element) {
+            const confirmDialog = document.createElement('div');
+            confirmDialog.className = 'delete-confirm';
+            confirmDialog.innerHTML = `
+                <p>Удалить фото?</p>
+                <div class="delete-confirm-buttons">
+                    <button class="delete-confirm-btn confirm" onclick="confirmDelete(${photoId}, this)">Да</button>
+                    <button class="delete-confirm-btn cancel" onclick="cancelDelete(this)">Нет</button>
+                </div>
+            `;
+            
+            element.appendChild(confirmDialog);
+            setTimeout(() => confirmDialog.classList.add('show'), 10);
+        }
+
+        function confirmDelete(photoId, button) {
+            const photoItem = button.closest('.photo-item');
+            const confirmDialog = button.closest('.delete-confirm');
+            
+            // Анимация удаления
+            photoItem.classList.add('removing');
+            
+            // Удаляем фото из массива и обновляем хранилище
+            const record = records.find(r => r.id === currentEditId);
+            if (record && record.photos) {
+                record.photos = record.photos.filter(photo => photo.id !== photoId);
+                saveToLocalStorage();
+            }
+            
+            // Уд��ляем элемент после анимации
+            setTimeout(() => {
+                photoItem.remove();
+                updatePhotoCounter();
+            }, 300);
+        }
+
+        function cancelDelete(button) {
+            const confirmDialog = button.closest('.delete-confirm');
+            confirmDialog.classList.remove('show');
+            setTimeout(() => confirmDialog.remove(), 300);
+        }
+
+        function updatePhotoCounter() {
+            const photoCount = document.querySelectorAll('.photo-item').length;
+            const counter = document.querySelector('.photo-counter');
+            if (counter) {
+                counter.textContent = `Фото: ${photoCount}`;
+            }
+        }
+
+        // Запуск приложения
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Проверяем сохраненную тему или системные настройки
+        function getPreferredTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                return savedTheme;
+            }
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        // Устанавливаем тему
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        }
+
+        // Переключаем тему
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            setTheme(newTheme);
+        }
+
+        // Устанавливаем начальную тему
+        setTheme(getPreferredTheme());
+
+        // Слушаем изменения системной темы
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) {
+                setTheme(e.matches ? 'dark' : 'light');
+            }
+        });
+
+        // Безопасное добавление обработчиков событий
+        function addEventListeners() {
+            try {
+                // Находим все элементы, которым нужны обработчики
+                const elements = document.querySelectorAll('[data-needs-listener]');
+                
+                if (!elements || elements.length === 0) {
+                    console.warn('Элементы для добавления обработчиков не найдены');
+                    return;
+                }
+
+                elements.forEach(element => {
+                    if (!element) return;
+
+                    const eventType = element.dataset.eventType || 'click';
+                    const handler = element.dataset.handler;
+
+                    if (handler && typeof window[handler] === 'function') {
+                        element.addEventListener(eventType, window[handler]);
+                    }
+                });
+
+            } catch (error) {
+                console.error('Ошибка при добавлении обработчиков событий:', error);
+            }
+        }
+
+        // Безосная инициализация
+        function initializePage() {
+            try {
+                setInitialTheme();
+                addEventListeners();
+            } catch (error) {
+                console.error('Ошибка при инициализации страницы:', error);
+            }
+        }
+
+        // Безосный запуск инициализации
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializePage);
+        } else {
+            initializePage();
+        }
+
+        // Добавляем прямой обработчик для кнопки темы
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                const themeToggleBtn = document.querySelector('.theme-toggle');
+                if (themeToggleBtn) {
+                    themeToggleBtn.addEventListener('click', toggleTheme);
+                    
+                    // Делаем кнопку видимой и активной
+                    themeToggleBtn.style.pointerEvents = 'auto';
+                    themeToggleBtn.style.cursor = 'pointer';
+                }
+            } catch (error) {
+                console.error('Ошибка при инициализации кнопки темы:', error);
+            }
+        });
+
+        // Обновляем HTML кнопки
+        function updateThemeIcon(theme) {
+            try {
+                const themeToggleBtn = document.querySelector('.theme-toggle');
+                if (!themeToggleBtn) return;
+                
+                const moonIcon = '🌙';
+                const sunIcon = '☀️';
+                
+                requestAnimationFrame(() => {
+                    themeToggleBtn.innerHTML = theme === THEMES.DARK ? moonIcon : sunIcon;
+                    themeToggleBtn.setAttribute('title', 
+                        theme === THEMES.DARK ? 'Переключить на светлую тему' : 'Переключить на тёмную тему'
+                    );
+                    
+                    // Убеждаемся, что кнопка кликабельна
+                    themeToggleBtn.style.pointerEvents = 'auto';
+                    themeToggleBtn.style.cursor = 'pointer';
+                });
+            } catch (error) {
+                console.error('Ошибка при обновлении иконки темы:', error);
+            }
+        }
+    </script>
+</body>
+</html>
